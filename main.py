@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 
 conexaoBd = sqlite3.connect('banco.db')
 
@@ -32,6 +33,19 @@ cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?
 
 
 conexaoBd.commit()
+
+query_sql = """
+    SELECT
+        clientes.id_cliente AS id,
+        clientes.nome,
+        pedidos.produto,
+        pedidos.preco
+    FROM clientes
+    INNER JOIN pedidos ON clientes.id_cliente = pedidos.id_cliente
+"""
+
+df_bruto = pd.read_sql_query(query_sql, conexaoBd)
+
 conexaoBd.close()
 
-print("Tabela Gerada")
+print(df_bruto)
