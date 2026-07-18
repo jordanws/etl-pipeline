@@ -30,11 +30,12 @@ cursor.execute("INSERT INTO clientes (nome) VALUES (?)", ('Maria Santos',))
 cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?)", (1, 'Notebook', 4000.00))
 cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?)", (2, 'Mouse sem fio', 120.50))
 cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?)", (1, 'Computador(Desktop)', 5600.00))
-
+cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?)", (2, 'Doce - Cortesia', None))
+cursor.execute("INSERT INTO pedidos (id_cliente, produto, preco) VALUES (?, ?, ?)", (1, 'Doce - Cortesia', None))
 
 conexaoBd.commit()
 
-query_sql = """
+juntar = """
     SELECT
         clientes.id_cliente AS id,
         clientes.nome,
@@ -44,8 +45,14 @@ query_sql = """
     INNER JOIN pedidos ON clientes.id_cliente = pedidos.id_cliente
 """
 
-df_bruto = pd.read_sql_query(query_sql, conexaoBd)
+df_bruto = pd.read_sql_query(juntar, conexaoBd)
+df_bruto = df_bruto.fillna(0)
+df_resultado = df_bruto.groupby('nome')['preco'].sum().reset_index()
+
+df_resultado.to_sql(name="vendas_consolidadas", con=conexaoBd, if_exists="replace", index=False)
+
+verificação = pd.read_sql("SELECT * FROM vendas_consolidadas LIMIT 5", conexaoBd)
 
 conexaoBd.close()
 
-print(df_bruto)
+print(verificação)
