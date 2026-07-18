@@ -45,8 +45,7 @@ juntar = """
     INNER JOIN pedidos ON clientes.id_cliente = pedidos.id_cliente
 """
 
-df_bruto = pd.read_sql_query(juntar, conexaoBd)
-df_bruto = df_bruto.fillna(0)
+df_bruto = pd.read_sql_query(juntar, conexaoBd).fillna(0)
 df_resultado = df_bruto.groupby('nome')['preco'].sum().reset_index()
 
 df_resultado.to_sql(name="vendas_consolidadas", con=conexaoBd, if_exists="replace", index=False)
