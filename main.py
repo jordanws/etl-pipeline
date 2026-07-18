@@ -51,8 +51,8 @@ df_resultado = df_bruto.groupby('nome')['preco'].sum().reset_index()
 
 df_resultado.to_sql(name="vendas_consolidadas", con=conexaoBd, if_exists="replace", index=False)
 
-verificação = pd.read_sql("SELECT * FROM vendas_consolidadas LIMIT 5", conexaoBd)
+verificacao = pd.read_sql("SELECT * FROM vendas_consolidadas LIMIT 5", conexaoBd)
 
 conexaoBd.close()
 
-print(verificação)
+print(verificacao)
