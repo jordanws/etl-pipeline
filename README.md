@@ -9,8 +9,8 @@ This repository demonstrates a lightweight ETL system. It is designed to extract
 ## Technologies Used
 
 * **Python 3.12.1 (Pandas lib)**
-* **SQLite3 3.45.3**
+* **SQLite 3.45.3**
 
 
 
-**Functional, but under development (feel free to help or improve the code).**
+**Functional, but under development (feel free to help/improve the code).**
